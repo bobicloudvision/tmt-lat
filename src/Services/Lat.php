@@ -2,11 +2,8 @@
 
 namespace Tmt\TmtLat\Services;
 
-use Dflydev\DotAccessData\Data;
-use Illuminate\Support\Facades\Queue;
-use Tmt\TmtLat\Jobs\DatabaseJob;
-use Tmt\TmtLat\Jobs\FileJob;
 use Tmt\TmtLat\Jobs\ArtisanJob;
+use Tmt\TmtLat\Jobs\DatabaseJob;
 use Tmt\TmtLat\Jobs\RouteJob;
 use Tmt\TmtLat\Jobs\FileScanner;
 
@@ -24,10 +21,9 @@ class Lat
 
     public function start()
     {
-
         if (config('tmt-lat.collect.database')) {
-            ArtisanJob::dispatch([
-                'type' => 'artisan',
+            DatabaseJob::dispatch([
+                'type' => 'database',
                 'timestamp' => now(),
             ])->onQueue($this->onQueue);
         }

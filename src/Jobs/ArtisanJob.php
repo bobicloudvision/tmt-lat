@@ -9,4 +9,9 @@ class ArtisanJob extends BaseJob
         parent::__construct($data);
         $this->onQueue = config('tmt-lat.queue', 'tmt');
     }
+
+    public function handle()
+    {
+        //
+    }
 }

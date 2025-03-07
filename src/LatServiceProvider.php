@@ -13,9 +13,13 @@ class LatServiceProvider extends ServiceProvider
             __DIR__.'/../config/tmt-lat.php', 'tmt-lat'
         );
 
-        $this->app->singleton(Lat::class, function ($app) {
-            return new Lat();
-        });
+        try {
+            $this->app->singleton(Lat::class, function ($app) {
+                return new Lat();
+            });
+        } catch (\Throwable $e) {
+            // Log::error('TMT-LAT failed to register: ' . $e->getMessage());
+        }
     }
 
     public function boot()
@@ -26,7 +30,11 @@ class LatServiceProvider extends ServiceProvider
             ], 'tmt-lat');
         }
 
-        $service = $this->app->make(Lat::class);
-        $service->start();
+        try {
+            $service = $this->app->make(Lat::class);
+            $service->start();
+        } catch (\Throwable $e) {
+            // Log::error('TMT-LAT failed to start: ' . $e->getMessage());
+        }
     }
 }
