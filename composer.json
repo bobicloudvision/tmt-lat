@@ -16,7 +16,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Tmt\\TmtLat\\TmtLatServiceProvider"
+                "Tmt\\TmtLat\\LatServiceProvider"
             ]
         }
     },
