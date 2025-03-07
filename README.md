@@ -1,1 +1,1 @@
-# tmt-laravel-activity-tracker
+# tmt-lat
