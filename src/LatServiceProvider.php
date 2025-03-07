@@ -38,20 +38,21 @@ class LatServiceProvider extends ServiceProvider
 
         if (config('tmt-lat.collect.database')) {
 
-            $databaseJobDispatch = function () {
+            $databaseJobDispatch = function ($info = '') {
                 DatabaseJob::dispatch([
                     'type' => 'database-change',
                     'timestamp' => now(),
+                    'info' => $info,
                 ])->onQueue(config('tmt-lat.queue.name', 'tmt'));
             };
-            Event::listen('eloquent.created: *', function () use ($databaseJobDispatch) {
-                $databaseJobDispatch();
+            Event::listen('eloquent.created: *', function ($event) use ($databaseJobDispatch) {
+                $databaseJobDispatch($event);
             });
-            Event::listen('eloquent.updated: *', function () use ($databaseJobDispatch) {
-                $databaseJobDispatch();
+            Event::listen('eloquent.updated: *', function ($event) use ($databaseJobDispatch) {
+                $databaseJobDispatch($event);
             });
-            Event::listen('eloquent.deleted: *', function () use ($databaseJobDispatch) {
-                $databaseJobDispatch();
+            Event::listen('eloquent.deleted: *', function ($event) use ($databaseJobDispatch) {
+                $databaseJobDispatch($event);
             });
 
             Event::listen(MigrationsStarted::class, $databaseJobDispatch);
