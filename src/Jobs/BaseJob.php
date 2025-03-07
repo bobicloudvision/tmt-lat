@@ -14,30 +14,28 @@ abstract class BaseJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $activity;
-    protected $teamId;
+    protected $data;
     protected $queue;
     protected $tries;
     protected $timeout;
 
-    public function __construct(array $activity, string $teamId)
+    public function __construct(array $data)
     {
-        $this->activity = $activity;
-        $this->teamId = $teamId;
-        $this->queue = config('tmt-lat.queue.default', 'default');
+        $this->data = $data;
+        $this->queue = config('tmt-lat.queue', 'tmt');
         $this->tries = config('tmt-lat.queue.tries', 3);
         $this->timeout = config('tmt-lat.queue.timeout', 30);
     }
 
     public function handle()
     {
-        ProcessData::dispatch($this->activity, $this->teamId);
+        ProcessData::dispatch($this->data);
     }
 
     public function failed(\Throwable $exception)
     {
         // \Illuminate\Support\Facades\Log::error('Job failed: ' . $exception->getMessage(), [
-        //     'activity' => $this->activity,
+        //     'data' => $this->data,
         //     'exception' => $exception,
         // ]);
     }

@@ -22,7 +22,7 @@ class FileScanner implements ShouldQueue
     public function __construct()
     {
         $this->ignoredPaths = config('tmt-lat.ignored_paths');
-        $this->queue = config('tmt-lat.queue.files', 'file-sync');
+        $this->queue = config('tmt-lat.queue', 'tmt');
         $this->tries = config('tmt-lat.queue.tries', 3);
         $this->timeout = config('tmt-lat.queue.timeout', 30);
     }

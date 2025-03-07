@@ -19,14 +19,11 @@ return [
     | Queue Configuration
     |--------------------------------------------------------------------------
     |
-    | Тук можете да конфигурирате настройките за опашките
+    | Тук можете да конфигурирате настройките за опашката
     |
     */
     'queue' => [
-        'database' => env('TMT_LAT_QUEUE_DATABASE', 'database-sync'),
-        'files' => env('TMT_LAT_QUEUE_FILES', 'file-sync'),
-        'artisan' => env('TMT_LAT_QUEUE_ARTISAN', 'artisan-sync'),
-        'routes' => env('TMT_LAT_QUEUE_ROUTES', 'route-sync'),
+        'name' => env('TMT_LAT_QUEUE', 'tmt'),
         'tries' => env('TMT_LAT_QUEUE_TRIES', 3),
         'timeout' => env('TMT_LAT_QUEUE_TIMEOUT', 30),
     ],

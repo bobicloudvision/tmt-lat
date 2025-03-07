@@ -15,7 +15,7 @@ class Lat
 
     public function __construct()
     {
-        $this->queue = config('tmt-lat.queue', 'default');
+        $this->queue = config('tmt-lat.queue', 'tmt');
     }
 
     public function start()
