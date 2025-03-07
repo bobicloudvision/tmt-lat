@@ -21,12 +21,6 @@ class Lat
 
     public function start()
     {
-        if (config('tmt-lat.collect.database')) {
-            DatabaseJob::dispatch([
-                'type' => 'database',
-                'timestamp' => now(),
-            ])->onQueue($this->onQueue);
-        }
 
         if (config('tmt-lat.collect.artisan')) {
             ArtisanJob::dispatch([
@@ -47,8 +41,4 @@ class Lat
         }
     }
 
-    public function shouldProcessTable($table)
-    {
-        return !in_array($table, config('tmt-lat.ignored_tables'));
-    }
 }

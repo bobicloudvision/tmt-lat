@@ -2,6 +2,8 @@
 
 namespace Tmt\TmtLat\Jobs;
 
+use Illuminate\Support\Facades\DB;
+
 class DatabaseJob extends BaseJob
 {
     public function __construct(array $data)
@@ -13,5 +15,11 @@ class DatabaseJob extends BaseJob
     public function handle()
     {
 
+    }
+
+
+    public function shouldProcessTable($table)
+    {
+        return !in_array($table, config('tmt-lat.ignored_tables'));
     }
 }
