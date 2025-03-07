@@ -15,14 +15,14 @@ class FileScanner implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $ignoredPaths;
-    private $queue;
+    private $onQueue;
     private $tries;
     private $timeout;
 
     public function __construct()
     {
         $this->ignoredPaths = config('tmt-lat.ignored_paths');
-        $this->queue = config('tmt-lat.queue', 'tmt');
+        $this->onQueue = config('tmt-lat.queue', 'tmt');
         $this->tries = config('tmt-lat.queue.tries', 3);
         $this->timeout = config('tmt-lat.queue.timeout', 30);
     }
@@ -77,4 +77,4 @@ class FileScanner implements ShouldQueue
         //     'exception' => $exception
         // ]);
     }
-} 
+}

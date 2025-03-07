@@ -29,4 +29,4 @@ class LatServiceProvider extends ServiceProvider
         $service = $this->app->make(Lat::class);
         $service->start();
     }
-} 
+}

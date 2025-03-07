@@ -2,6 +2,7 @@
 
 namespace Tmt\TmtLat\Services;
 
+use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\Queue;
 use Tmt\TmtLat\Jobs\DatabaseJob;
 use Tmt\TmtLat\Jobs\FileJob;
@@ -11,46 +12,42 @@ use Tmt\TmtLat\Jobs\FileScanner;
 
 class Lat
 {
-    private $queue;
+    private $onQueue;
 
     public function __construct()
     {
-        $this->queue = config('tmt-lat.queue', 'tmt');
+        $getQueue = config('tmt-lat.queue', 'tmt');
+        if (isset($getQueue['name'])) {
+            $this->onQueue = $getQueue['name'];
+        }
     }
 
     public function start()
     {
+
         if (config('tmt-lat.collect.database')) {
-            Queue::connection($this->queue)->push(function () {
-                DatabaseJob::dispatch([
-                    'type' => 'database',
-                    'timestamp' => now(),
-                ]);
-            });
+            ArtisanJob::dispatch([
+                'type' => 'artisan',
+                'timestamp' => now(),
+            ])->onQueue($this->onQueue);
         }
 
         if (config('tmt-lat.collect.artisan')) {
-            Queue::connection($this->queue)->push(function () {
-                ArtisanJob::dispatch([
-                    'type' => 'artisan',
-                    'timestamp' => now(),
-                ]);
-            });
+            ArtisanJob::dispatch([
+                'type' => 'artisan',
+                'timestamp' => now(),
+            ])->onQueue($this->onQueue);
         }
 
         if (config('tmt-lat.collect.routes')) {
-            Queue::connection($this->queue)->push(function () {
-                RouteJob::dispatch([
-                    'type' => 'route',
-                    'timestamp' => now(),
-                ]);
-            });
+            RouteJob::dispatch([
+                'type' => 'route',
+                'timestamp' => now(),
+            ])->onQueue($this->onQueue);
         }
 
         if (config('tmt-lat.collect.files')) {
-            Queue::connection($this->queue)->push(function () {
-                FileScanner::dispatch();
-            });
+            FileScanner::dispatch()->onQueue($this->onQueue);
         }
     }
 
@@ -58,4 +55,4 @@ class Lat
     {
         return !in_array($table, config('tmt-lat.ignored_tables'));
     }
-} 
+}

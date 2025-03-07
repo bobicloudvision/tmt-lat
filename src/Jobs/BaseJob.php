@@ -15,21 +15,23 @@ abstract class BaseJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $data;
-    protected $queue;
+    protected $onQueue;
     protected $tries;
     protected $timeout;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->data = $data;
-        $this->queue = config('tmt-lat.queue', 'tmt');
+        $this->onQueue = config('tmt-lat.queue', 'tmt');
         $this->tries = config('tmt-lat.queue.tries', 3);
         $this->timeout = config('tmt-lat.queue.timeout', 30);
+
     }
 
     public function handle()
     {
-        ProcessData::dispatch($this->data);
+        ProcessData::dispatch($this->data)
+            ->onQueue($this->onQueue['name']);
     }
 
     public function failed(\Throwable $exception)
@@ -39,4 +41,4 @@ abstract class BaseJob implements ShouldQueue
         //     'exception' => $exception,
         // ]);
     }
-} 
+}

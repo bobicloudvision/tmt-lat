@@ -7,6 +7,6 @@ class RouteJob extends BaseJob
     public function __construct(array $data)
     {
         parent::__construct($data);
-        $this->queue = config('tmt-lat.queue', 'tmt');
+        $this->onQueue = config('tmt-lat.queue', 'tmt');
     }
-} 
+}
