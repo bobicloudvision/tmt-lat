@@ -40,17 +40,17 @@ class LatServiceProvider extends ServiceProvider
 
             $databaseJobDispatch = function () {
                 DatabaseJob::dispatch([
-                    'type' => 'database',
+                    'type' => 'database-change',
                     'timestamp' => now(),
                 ])->onQueue(config('tmt-lat.queue.name', 'tmt'));
             };
-            Event::listen('eloquent.created: *', function ($event, $models) use ($databaseJobDispatch) {
+            Event::listen('eloquent.created: *', function () use ($databaseJobDispatch) {
                 $databaseJobDispatch();
             });
-            Event::listen('eloquent.updated: *', function ($event, $models) use ($databaseJobDispatch) {
+            Event::listen('eloquent.updated: *', function () use ($databaseJobDispatch) {
                 $databaseJobDispatch();
             });
-            Event::listen('eloquent.deleted: *', function ($event, $models) use ($databaseJobDispatch) {
+            Event::listen('eloquent.deleted: *', function () use ($databaseJobDispatch) {
                 $databaseJobDispatch();
             });
 
